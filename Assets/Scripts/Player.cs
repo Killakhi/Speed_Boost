@@ -1,26 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     private float horizontal;
     private float vertical;
-    [SerializeField] float speed;
+    static float speed = 5f;
     public Rigidbody2D rb;
+    public Speedbar speedbar;
+    public float currentBoostSpeed;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentBoostSpeed = 0;
+        speedbar.fastorNot(0);
     }
+    public void getSpeed(float sp)
+    {
+        currentBoostSpeed += sp;
+        speedbar.fastorNot(currentBoostSpeed);
+        speed =+ 10;
+    }
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Speed"))
+        {
+            Destroy(other.gameObject);
+            getSpeed(1+currentBoostSpeed);
 
+        }
+    }
     // Update is called once per frame
     void Update()
     {
-         horizontal=Input.GetAxis("Horizontal");
+         horizontal =Input.GetAxis("Horizontal");
          vertical = Input.GetAxis("Vertical");
 
         Vector2 vector = new Vector2(horizontal, vertical).normalized;
         rb.velocity = vector * speed;
     }
+
 }
