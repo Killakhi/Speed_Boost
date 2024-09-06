@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public Speedbar speedbar;
     public float currentBoostSpeed;
+    public bool isBoosted;
 
     void Start()
     {
@@ -22,14 +23,15 @@ public class Player : MonoBehaviour
     {
         currentBoostSpeed += sp;
         speedbar.fastorNot(currentBoostSpeed);
-        speed =+ 10;
+        speed =+ 10f * currentBoostSpeed;
+        
     }
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Speed"))
         {
             Destroy(other.gameObject);
-            getSpeed(1+currentBoostSpeed);
+            getSpeed(1);
 
         }
     }
